@@ -1,7 +1,7 @@
 {
-  "name": "api-run",
+  "name": "apirun",
   "version": "1.0.0",
-  "description": "Simple Api with Cloud Run",
+  "description": "Basic Api with Cloud Run",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"

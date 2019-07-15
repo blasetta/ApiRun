@@ -1,24 +1,34 @@
 
 'use strict';
 
+// Express - web application framework for building web applications and APIs
 const express = require('express');
 const app = express();
 
+// Skeleton for configuration (it is not really needed...but it is the way togo)
 var config = require('./config');
 
 const {Datastore} = require('@google-cloud/datastore');
 const ds = new Datastore();
-const kind = 'Book';
+const kind = null; // here your "Table name"
 
 // Imports the Google Cloud client library.
 const {Storage} = require('@google-cloud/storage');
 
-// Instantiates a client. If you don't specify credentials when constructing
-// the client, the client library will look for credentials in the
-// environment.
+// Cloud Storage
 const storage = new Storage();
 
-// Makes an authenticated API request.
+
+// Smart API
+app.get('/', (req, res) => {
+    console.log('Wow! I received a request.');
+    
+    res.send(`Hello Folks...I am working at ${process.env.PORT || 8080}`);
+});
+
+
+
+// What is in my store? ....Let's see
 app.get('/store', (req, res) => {
     console.log('ci sono :');
     storage
@@ -44,31 +54,10 @@ app.get('/store', (req, res) => {
         });
 });
 
-app.get('/', (req, res) => {
-    console.log('Hello world received a request.');
-
-    const target = process.env.TARGET || 'World';
-    res.send(`Hello ${target}!`);
-});
-
-app.get('/set', (req, res) => {
-    console.log('Hello world received a request.');
-
-    const target = process.env.TARGET || 'set';
-    res.send(`Hello ${target}!`);
-});
-
-
-app.get('/get', (req, res) => {
-    console.log('Hello world received a request.');
-
-    const target = process.env.TARGET || 'get';
-    res.send(`Hello ${target}!`);
-});
-
+// Datastore - Query - if don't ask for an entitity it gives what it will find
 app.get('/q', (req, res) => {
 
-    const myquery = ds.createQuery([kind]);
+    const myquery = (kind) ? ds.createQuery([kind]) : ds.createQuery();
     /*.limit(limit)
      .order('title')
      .start(token);*/
@@ -92,5 +81,5 @@ app.get('/q', (req, res) => {
 
 const port = process.env.PORT || 8080;
 app.listen(port, () => {
-    console.log('Hello world listening on port', port);
+    console.log('Hi! I am listening on port', port);
 });
